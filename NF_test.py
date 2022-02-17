@@ -14,13 +14,16 @@ def print_and_accept(pkt):
     my_pay = pkt.get_payload()
     # print ( my_pay )
     for byte in my_pay:
- #       pass
-        print( byte )
+        pass
+#        print( byte )
 
 #    print(my_pay[TCP].payload)
 
     print('DST', IP(my_pay).dst )
     print('SRC', IP(my_pay).src )
+# Here I 'convert' nfqueue to scapy: 
+    sc_pkt = IP(pkt.get_payload())
+    print(sc_pkt.show())
     pkt.accept()
 
 nfqueue = NetfilterQueue()
