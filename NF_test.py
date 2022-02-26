@@ -13,7 +13,7 @@ def print_and_accept(pkt):
 # Here I 'convert' nfqueue to scapy:
     print('CM:Do fancy stuff')
     sc_pkt = IP(pkt.get_payload())
-    print ( sc_pkt )
+    print ( sc_pkt, type(sc_pkt) )
     for byte in sc_pkt:
         pass
 #        print( byte )
@@ -28,16 +28,23 @@ def print_and_accept(pkt):
 # TCP payload is the actual data to be encrypted
     if sc_pkt.haslayer(TCP):
         print('TCP checksum: ', sc_pkt[TCP].chksum)
-        print('PAYLOAD before: ', sc_pkt[TCP].payload)
+        print('PAYLOAD before: ', sc_pkt[TCP].payload, type(sc_pkt[TCP].payload))
         payload_before = len(sc_pkt[TCP].payload)
-        sc_pkt[TCP].payload = str(sc_pkt[TCP].payload).replace('err','txx')
+#        sc_pkt[TCP].payload = sc_pkt.raw(str(sc_pkt[TCP].payload).replace('err','txx'))
+# HEUREKA! This seems to be how to change the 'raw'-payload in TCP-segment:
+
+        if sc_pkt.haslayer(Raw):
+            sc_pkt[Raw].load = 'cm_replace\n'
+            del sc_pkt.chksum
+            sc_pkt = sc_pkt.__class__(bytes(sc_pkt))
+
         payload_after = len(sc_pkt[TCP].payload)
         payload_dif = payload_after - payload_before
         sc_pkt[IP].len = sc_pkt[IP].len + payload_dif
 #        sc_pkt[TCP].payload = bytes('ex\n', 'UTF-8')
 
 #TODO: Here seems to be the problem: The packet is not properly crafted after 'replace'; confusing byte / str when trying 'print(sc_pkt.show())'
-        print('PAYLOAD after: ', sc_pkt[TCP].payload)
+        print('PAYLOAD after: ', sc_pkt[TCP].payload, type(sc_pkt[TCP].payload))
 
 #        pkt.set_payload(bytes(sc_pkt))
 
@@ -45,6 +52,8 @@ def print_and_accept(pkt):
 #        pkt.set_verdict_modified(nfqueue.NF_ACCEPT, str(sc_pkt), len(sc_pkt))
 #        pkt.drop()
 #        send(sc_pkt)
+
+# TODO: The packet is crafted, but how to send the manipulated packet??
         pkt.accept()
 
     else:
