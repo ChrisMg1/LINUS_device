@@ -50,10 +50,10 @@ def print_and_accept(pkt):
 #        pkt.set_verdict_modified(nfqueue.NF_ACCEPT, str(sc_pkt), len(sc_pkt))
 
 
-#        pkt.drop()
-#        sendp(sc_pkt)
+        pkt.drop()
+        sendp(sc_pkt)
 
-        pkt.accept()
+#        pkt.accept()
 
     else:
         pkt.accept()

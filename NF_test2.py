@@ -1,7 +1,7 @@
 import sys
 sys.path.append("/home/pi/.local/lib/python3.9/site-packages")
+#import netfilterqueue
 from netfilterqueue import NetfilterQueue
-
 #import nfqueue
 from scapy.all import *
 import os
@@ -18,7 +18,7 @@ def callback(payload):
 def main():
     q = NetfilterQueue()
 #    q = nfqueue.queue()
-#    q.open()
+    q.open()
     q.bind(0, socket.AF_INET)
     q.set_callback(callback)
     q.create_queue(0)
