@@ -37,6 +37,15 @@ def cm_otp_encrypt(in_data, keyPath, keyIndex):
     return (cm_enc, newIndex)
 
 
+# Test inputs
 use_msg = 'verySecretThings  '
-use_key = 'C:/Users/chris/Documents/cm_key.txt'
-use_idx = 0
+use_key = 'C:/Users/chris/Documents/cm_key.jpg'
+use_idx = 3500
+
+# Test encryption
+en1 = cm_otp_encrypt(use_msg, use_key, use_idx)
+print(en1)
+
+# Test decryption
+de1 = cm_otp_encrypt(en1[0], use_key, use_idx)
+print(de1)
