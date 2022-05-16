@@ -4,6 +4,7 @@ Created on Sat Mar 12 16:28:09 2022
 
 @author: chris
 """
+import os
 
 def simple_enc(ba1, ba2):
     """ XOR two byte strings """
@@ -16,6 +17,14 @@ def cm_otp_encrypt(in_data, keyPath, keyIndex):
     to be included in the frame"""
     with open(keyPath, "rb") as f:
         
+        # Check if there are enough keys left
+        file_stats = os.stat(keyPath)
+        if (file_stats.st_size - keyIndex - len(in_data) < 0):
+            print('no more keys available')
+            # todo: Linker to key generator
+            return None
+
+                
         # Read the key file as byte object, whatever it is (e.g. txt, wav, etc.)
         cm_byteKEY = f.read()
 
@@ -27,7 +36,8 @@ def cm_otp_encrypt(in_data, keyPath, keyIndex):
             try:
                 in_data = in_data.encode('utf8')
             except:
-                print("input neither byte nor string") 
+                print('input neither byte nor string')
+                return None
         
         # en-/decrypt the input data (payload) according to OTP using the key with correct index
         cm_enc = bytes([a^b for a,b in zip(in_data, cm_byteKEY)])
@@ -40,7 +50,7 @@ def cm_otp_encrypt(in_data, keyPath, keyIndex):
 # Test inputs
 use_msg = 'verySecretThings  '
 use_key = 'C:/Users/chris/Documents/cm_key.jpg'
-use_idx = 3500
+use_idx = 300
 
 # Test encryption
 en1 = cm_otp_encrypt(use_msg, use_key, use_idx)
