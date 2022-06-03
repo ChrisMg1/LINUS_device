@@ -46,16 +46,19 @@ def cm_otp_encrypt(in_data, keyPath, keyIndex):
     newIndex = keyIndex + len(in_data)
     return (cm_enc, newIndex)
 
-
-# Test inputs
-use_msg = 'verySecretThings  '
-use_key = 'C:/Users/chris/Documents/cm_key.jpg'
-use_idx = 300
-
-# Test encryption
-en1 = cm_otp_encrypt(use_msg, use_key, use_idx)
-print(en1)
-
-# Test decryption
-de1 = cm_otp_encrypt(en1[0], use_key, use_idx)
-print(de1)
+if __name__ == '__main__':
+    # Test inputs
+    use_msg = 'verySecretThings  '
+    use_key = 'C:/Users/chris/Documents/cm_key.jpg'
+    use_idx = 12
+    
+    # Test encryption
+    en1 = cm_otp_encrypt(use_msg, use_key, use_idx)
+    #print(en1)
+    
+    
+    # Test decryption
+    # de1 = cm_otp_encrypt(en1[0], use_key, use_idx)
+    de1 = cm_otp_encrypt(b'9(s^2te{t', use_key, use_idx)
+    print(de1)
+    print(de1[0].decode())

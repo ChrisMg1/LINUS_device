@@ -1,3 +1,14 @@
 
 *.pyc
 config.py
+*.toc
+*.txt
+*.exe
+*.spec
+*.html
+*.manifest
+*.pkg
+*.zip
+*.pyz
+test.py
+*.jpg
