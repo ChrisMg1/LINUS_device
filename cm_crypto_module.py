@@ -50,15 +50,25 @@ if __name__ == '__main__':
     # Test inputs
     use_msg = 'verySecretThings  '
     use_key = 'C:/Users/chris/Documents/cm_key.jpg'
-    use_idx = 12
+    use_idx = 34
     
     # Test encryption
     en1 = cm_otp_encrypt(use_msg, use_key, use_idx)
-    #print(en1)
+    print(en1)
     
     
     # Test decryption
-    # de1 = cm_otp_encrypt(en1[0], use_key, use_idx)
-    de1 = cm_otp_encrypt(b'9(s^2te{t', use_key, use_idx)
+    de1 = cm_otp_encrypt(en1[0], use_key, use_idx)
     print(de1)
     print(de1[0].decode())
+    
+    
+    # Decrypt messages from Pi
+    
+    rec_msg = b'=\x8e-%7\xbfl\xf9\x9a\xb7\x92\xd1t\xc4\xd4\x1a\x82ha'
+    use_idx_pi = 3400
+    de2 = cm_otp_encrypt(rec_msg, use_key, use_idx_pi)
+    print(de2)
+    print(de2[0].decode())
+    
+    

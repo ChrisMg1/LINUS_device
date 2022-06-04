@@ -6,7 +6,7 @@ Created on Thu Jun  2 20:43:10 2022
 """
 
 
-import urllib
+import urllib.request
 import plac
 from datetime import datetime
 from pathlib import Path
@@ -34,7 +34,7 @@ def nc_transmit(hn, p, content):
 
 def main(port=4455, uri='ebhzandffhs5ewae.myfritz.net', key=0, message='test', file='./cm_key.jpg', encrypt=False):
     """Send a message to Christoph's Raspberry with or without encryption. Version 0.1"""
-    
+
     if (encrypt):
         message = str(cm_otp_encrypt(message, file, key)[0])
         encrypt_m = 'enabled'
@@ -48,7 +48,7 @@ def main(port=4455, uri='ebhzandffhs5ewae.myfritz.net', key=0, message='test', f
     
     nc_transmit(uri, port, print_out)
     
-    print('The following message was sent:\n', print_out, '\nEncryption is', encrypt_m)
+    print('The following message was sent:\n', print_out, '\nEncryption was', encrypt_m, '\n')
     
     #tup = make_tuple(print_out)
     
