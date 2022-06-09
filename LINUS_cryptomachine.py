@@ -33,7 +33,7 @@ def nc_transmit(hn, p, content):
 
 
 def main(port=4455, uri='ebhzandffhs5ewae.myfritz.net', key=0, message='test', file='./cm_key.jpg', encrypt=False):
-    """Send a message to Christoph's Raspberry with or without encryption. Version 0.1"""
+    """Send a message to Christoph's Raspberry with or without encryption. Version 0.2"""
 
     if (encrypt):
         message = str(cm_otp_encrypt(message, file, key)[0])
@@ -42,13 +42,11 @@ def main(port=4455, uri='ebhzandffhs5ewae.myfritz.net', key=0, message='test', f
         encrypt_m = 'disabled'
     
     external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
-    print_out = '("' + message + '",' + str(key) + ',"' + external_ip + '","' + str(datetime.now()) + '")\n'
-
-    
-    
+    print_out = ';("' + message + '",' + str(key) + ',"' + external_ip + '","' + str(datetime.now()) + '")\n'
+   
     nc_transmit(uri, port, print_out)
     
-    print('The following message was sent:\n', print_out, '\nEncryption was', encrypt_m, '\n')
+    print('The following message was sent:\n', print_out[1:], '\nEncryption was', encrypt_m, '\n')
     
     #tup = make_tuple(print_out)
     
