@@ -22,6 +22,18 @@ def nc_transmit(hn, p, content):
     time.sleep(0.5)
     s.shutdown(socket.SHUT_WR)
     s.close()
+    
+def stringClean(s):
+    """
+    If a string has single or double quotes around it, remove them.
+    Make sure the pair of quotes match.
+    If a matching pair of quotes is not found, return the string unchanged.
+    """
+    #s = s.replace(",", "_")
+    #s = s.replace(";", "-")
+    if (s[0] == s[-1]) and s.startswith(("'", '"')):
+        return s[1:-1]
+    return s
 
 
 @plac.opt('port', "Destination Port", type=int)
@@ -35,6 +47,8 @@ def nc_transmit(hn, p, content):
 def main(port=4455, uri='ebhzandffhs5ewae.myfritz.net', key=0, message='test', file='./cm_key.jpg', encrypt=False):
     """Send a message to Christoph's Raspberry with or without encryption. Version 0.2"""
 
+    message = stringClean(message)
+    
     if (encrypt):
         message = str(cm_otp_encrypt(message, file, key)[0])
         encrypt_m = 'enabled'
@@ -43,7 +57,7 @@ def main(port=4455, uri='ebhzandffhs5ewae.myfritz.net', key=0, message='test', f
     
     external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
     print_out = ';("' + message + '",' + str(key) + ',"' + external_ip + '","' + str(datetime.now()) + '")\n'
-   
+    
     nc_transmit(uri, port, print_out)
     
     print('The following message was sent:\n', print_out[1:], '\nEncryption was', encrypt_m, '\n')
