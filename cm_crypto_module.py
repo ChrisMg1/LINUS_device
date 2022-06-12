@@ -49,7 +49,7 @@ def cm_otp_encrypt(in_data, keyPath, keyIndex):
 if __name__ == '__main__':
     # Test inputs
     use_msg = 'verySecretThings  '
-    use_key_sink = 'C:/Users/chris/Documents/cm_key.jpg'
+    use_key = 'C:/Users/chris/Documents/cm_key.jpg'
     use_idx = 34
     
     # Test encryption
@@ -65,8 +65,10 @@ if __name__ == '__main__':
     
     # Decrypt messages from Pi
     
+    #rec_msg = b'7\x01ea;pd\\xcb'
     rec_msg = b"\x1f\x8e53,\xb3'\xf9\x82\xae\x83\x83#\xd2\xc8H\x85c-k\xde\xff\xc9Z\x07\xaf\x1f\x90\x1b\xb6"
-    use_idx_pi = 3406
+    
+    use_idx_pi = 3400
     de2 = cm_otp_encrypt(rec_msg, use_key, use_idx_pi)
     print(de2)
     print(de2[0].decode())
