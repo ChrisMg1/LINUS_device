@@ -49,8 +49,6 @@ def main(port=4455, uri='ebhzandffhs5ewae.myfritz.net', key=0, message='test', f
 
     message = stringClean(message)
     
-    print('before: ', message, type(message))
-    
     if (encrypt):
         message = str(cm_otp_encrypt(message, file, key)[0])
         encrypt_m = 'enabled'
@@ -60,10 +58,11 @@ def main(port=4455, uri='ebhzandffhs5ewae.myfritz.net', key=0, message='test', f
         key = False
         encrypt_m = 'disabled'
     
-    print('after: ', message, type(message))
-    
     external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
     print_out = ';(' + message + ',' + str(key) + ',"' + external_ip + '","' + str(datetime.now()) + '")\n'
+
+    # Optional: COncatenate n times
+    print_out = print_out*3000
     
     nc_transmit(uri, port, print_out)
     
