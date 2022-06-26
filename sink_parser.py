@@ -22,20 +22,24 @@ cp_file = 'C:/Users/chris/Documents/nc_receive.txt'
 ## import data frame
 data = pd.read_csv(cp_file, sep=" ;", header=None, quotechar='"', engine='python', encoding='utf-8')
 
+print(data)
 
 ## parse transmited data (tuple to df)
 data[1] = data[1].apply(ast.literal_eval)
 
 
+
 ## make cloumns proper format
 data.rename(columns = {0:'receive time'}, inplace = True)
-data[['ciphertext', 'key', 'source ip', 'send time']] = pd.DataFrame(data[1].tolist(), index=data.index)
-data['send time'] = pd.to_datetime(data['send time'],format='%Y-%m-%d %H:%M:%S.%f')
-data['receive time'] = pd.to_datetime(data['receive time'],format='%Y-%m-%d %H:%M:%S.%f')
+data[['source ip', 'send time', 'encrypted', 'ciphertext']] = pd.DataFrame(data[1].tolist(), index=data.index)
+#data['send time'] = pd.to_datetime(data['send time'],format='%Y-%m-%d %H:%M:%S.%f')
+#data['receive time'] = pd.to_datetime(data['receive time'],format='%Y-%m-%d %H:%M:%S.%f')
 
 
 ## ...and delete raw input
 del data[1]
+print(data)
+
 
 ## calculate time estimate
 data['time diff'] = data['receive time'] - data['send time']

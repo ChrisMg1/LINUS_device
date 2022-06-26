@@ -5,11 +5,34 @@ Created on Sat Mar 12 16:28:09 2022
 @author: chris
 """
 import os
+import hashlib
 
 def simple_enc(ba1, ba2):
     """ XOR two byte strings """
     ret_bytes = bytes( [_a ^ _b for _a, _b in zip(ba1, ba2)])
     return ret_bytes
+
+def cm_otp_encrypt_sha(in_data, in_key):
+    cm_enc = bytes([a^b for a,b in zip(in_data, in_key)])
+    return cm_enc
+
+def cm_generate_key(in_file, in_ip, in_time):
+    ## read file (secret) as salt
+    r_file = open(in_file, "rb") # opening for [r]eading as [b]inary
+    byte_from_img = r_file.read() # if you only wanted to read 512 bytes, do .read(512)
+    r_file.close()
+    
+    ## read IP as salt
+    byte_from_ip = in_ip
+    
+    ## read timestamp as salt
+    byte_from_timestamp = str(in_time).encode('utf-8')
+    
+    ## combine salts
+    byte_total = byte_from_img + byte_from_ip + byte_from_timestamp
+
+    return hashlib.sha256(byte_total).digest()
+    
 
 def cm_otp_encrypt(in_data, keyPath, keyIndex):
     """Encryption function with one-time-pad: Takes in the data to be encrypted, 
