@@ -12,3 +12,5 @@ config.py
 *.pyz
 test.py
 *.jpg
+*.workspace
+*.session
